@@ -10,45 +10,65 @@ public class PlayerID : NetworkBehaviour
 
     public override void OnStartLocalPlayer()
     {
-        GetIdentity();
+        GetNetIdentity();
         SetIdentity();
+        SetCameraTarget();
     }
 
-    void Update ()
+    // Use this for initialization
+    void Start()
     {
-        if (name == "" || name == "ironmanPrefab 1(Clone)")
+
+    }
+
+    // Update is called once per frame
+    void Update()
+    {
+        if (transform.name == "" || transform.name == "ironmanPrefab 1(Clone)")
         {
             SetIdentity();
         }
-	}
+
+    }
 
     [Client]
-    private void GetIdentity()
+    void GetNetIdentity()
     {
         playerNetID = GetComponent<NetworkIdentity>().netId;
         CmdTellServerMyIdentity(MakeUniqueIdentity());
     }
 
-    private void SetIdentity()
+    void SetIdentity()
     {
         if (!isLocalPlayer)
         {
-            transform.name = playerUniqueName;
+            this.transform.name = playerUniqueName;
         }
         else
         {
+            // case when it is the local client player
+            // we need to create the ID
             transform.name = MakeUniqueIdentity();
         }
     }
 
+    string MakeUniqueIdentity()
+    {
+        return "Player" + playerNetID.ToString();
+    }
+
     [Command]
-    private void CmdTellServerMyIdentity(string identity)
+    void CmdTellServerMyIdentity(string name)
     {
         playerUniqueName = name;
     }
 
-    private string MakeUniqueIdentity()
+    void SetCameraTarget()
     {
-        return "Player" + playerNetID.ToString(); 
+        /*if (isLocalPlayer)
+        {
+            Camera.main.GetComponent<CameraFollow>().Target = this.gameObject;
+            Camera.main.GetComponent<CameraFollow>().SetCameraOffset(this.gameObject.transform.position);
+        }*/
     }
 }
