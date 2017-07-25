@@ -7,10 +7,8 @@ using UnityEngine.UI;
 public class IronManBehaviorScript : MonoBehaviour {
 
 	public float speed = 2.0f;
-	public GameObject gameOverPanel;
 	PlayerHealth playerHealth;
 	public int score;
-	public Text scoreText;
 
 	Vector3 movement;
 	Rigidbody playerRigidBody;
@@ -19,35 +17,24 @@ public class IronManBehaviorScript : MonoBehaviour {
 	int floorMask;
 	float camRayLength = 100.0f;
 	public bool isEnabled = true;
-	public bool gameOver = false;
 
-	public AudioClip gameOverClip;
 	public AudioSource audioSource;
 
 	// Use this for initialization
 	void Start () {
-		gameOverPanel.SetActive (false);
 		GameObject player = GameObject.FindGameObjectWithTag ("Player");
 		playerHealth = player.GetComponent<PlayerHealth> ();
 		score = 0;
-		scoreText.text = "Score: 0";
 		audioSource = GetComponent<AudioSource> ();
 
 		AdsSetup ();
-
 	}
 	
 	// Update is called once per frame
 	void Update () {
 		if (playerHealth.currentHealth <= 0) {
 			isEnabled = false;
-			if (!gameOver) {
-				Invoke ("DisplayGameOver", 1.0f);
-			}
 		}
-
-		scoreText.text = "Score: " + score.ToString ();
-
 	}
 
 	void Awake() {
@@ -125,24 +112,24 @@ public class IronManBehaviorScript : MonoBehaviour {
 	}
 
 
-	public void DisableMovement(){
+	public void DisableMovement()
+    {
 		isEnabled = false;
 	}
 
-	public void RestartGame(){
+	public void RestartGame()
+    {
 		SceneManager.LoadScene ("scene-ironman");
 	}
 
-	void DisplayGameOver(){
-		gameOver = true;
-		gameOverPanel.SetActive (true);
-		audioSource.PlayOneShot (gameOverClip);
+	void DisplayGameOver()
+    {
 		// todo: display ads
 		//Advertisement.Show();
 	}
 
-	void AdsSetup(){
+	void AdsSetup()
+    {
 		//Advertisement.Initialize ("1041425", true);
 	}
-
 }

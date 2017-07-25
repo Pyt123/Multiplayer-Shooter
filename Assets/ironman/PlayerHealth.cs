@@ -6,8 +6,6 @@ public class PlayerHealth : MonoBehaviour {
 
 	public int startingHealth = 100;
 	public int currentHealth = 100;
-	public Text healthText;
-	public Slider healthSlider;
 
 	float shakingTimer = 0;
 	public float timeToShake = 1.0f;
@@ -21,14 +19,11 @@ public class PlayerHealth : MonoBehaviour {
 	void Start () {
 		currentHealth = startingHealth;
 		anim = GetComponent<Animator> ();
-		healthSlider.value = startingHealth;
 	}
 
 	// Update is called once per frame
 	void Update () {
 		//healthText.text = "HP: " + currentHealth.ToString ();
-		healthText.text = "HP:";
-		healthSlider.value = currentHealth;
 
 		if (isShaking == true && shakingTimer < timeToShake) {
 			shakingTimer += Time.deltaTime;
@@ -68,8 +63,6 @@ public class PlayerHealth : MonoBehaviour {
 
 	void ShakeCamera(){
 		shakingTimer = 0;
-		isShaking = true;
-		
-	}
-		
+		isShaking = true;		
+	}		
 }

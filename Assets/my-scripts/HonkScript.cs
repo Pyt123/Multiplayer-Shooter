@@ -5,9 +5,8 @@ public class HonkScript : MonoBehaviour {
 
 	AudioSource audioSource;
 	public AudioClip clip;
-	bool alreadyHonked = false;
-	// Use this for initialization
-	void Start () {
+
+    void Start () {
 		audioSource = GetComponent<AudioSource> ();
 	
 	}

@@ -67,10 +67,14 @@ namespace DigitalRuby.PyroParticles
                 if (ManualParticleSystems == null || ManualParticleSystems.Length == 0 ||
                     System.Array.IndexOf(ManualParticleSystems, p) < 0)
                 {
+#pragma warning disable CS0618 // Typ lub element członkowski jest przestarzały
                     if (p.startDelay == 0.0f)
+#pragma warning restore CS0618 // Typ lub element członkowski jest przestarzały
                     {
                         // wait until next frame because the transform may change
+#pragma warning disable CS0618 // Typ lub element członkowski jest przestarzały
                         p.startDelay = 0.01f;
+#pragma warning restore CS0618 // Typ lub element członkowski jest przestarzały
                     }
                     p.Play();
                 }

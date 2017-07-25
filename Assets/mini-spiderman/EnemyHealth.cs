@@ -14,7 +14,7 @@ public class EnemyHealth : MonoBehaviour {
 
 	ParticleSystem hitParticles;
 
-	AudioSource audio;
+	AudioSource audioSource;
 	public AudioClip hurt1;
 	public AudioClip hurt2;
 	public AudioClip hurt3;
@@ -27,7 +27,7 @@ public class EnemyHealth : MonoBehaviour {
 		anim = GetComponent<Animator> ();
 		agent = GetComponent<UnityEngine.AI.NavMeshAgent> ();
 		hitParticles = GetComponent<ParticleSystem> ();
-		audio = GetComponent<AudioSource> ();
+		audioSource = GetComponent<AudioSource> ();
 	}
 	
 	// Update is called once per frame
@@ -49,22 +49,22 @@ public class EnemyHealth : MonoBehaviour {
 			GameObject player = GameObject.FindGameObjectWithTag ("Player");
 			IronManBehaviorScript playerScript = player.GetComponent<IronManBehaviorScript> ();
 			playerScript.score += pointValueOnKill;
-			audio.PlayOneShot (scoreUp, 1.0f);
+			audioSource.PlayOneShot (scoreUp, 1.0f);
 			Death ();
 		}
 
 		int randomNumber = Random.Range (1, 3);
 		switch (randomNumber) {
 		case 1:
-			audio.PlayOneShot (hurt1, 0.3f);
+            audioSource.PlayOneShot (hurt1, 0.3f);
 			break;
 
 		case 2:
-			audio.PlayOneShot (hurt2, 0.3f);
+            audioSource.PlayOneShot (hurt2, 0.3f);
 			break;
 
 		case 3:
-			audio.PlayOneShot (hurt3, 0.3f);
+            audioSource.PlayOneShot (hurt3, 0.3f);
 			break;
 
 		}
