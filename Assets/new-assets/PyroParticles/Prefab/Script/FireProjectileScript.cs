@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using UnityEngine.Networking;
 
 namespace DigitalRuby.PyroParticles
 {
@@ -15,6 +16,9 @@ namespace DigitalRuby.PyroParticles
     /// </summary>
     public class FireProjectileScript : FireBaseScript, ICollisionHandler
     {
+        [SerializeField] private const int damage = 20;
+        public string ownerName;
+
         [Tooltip("The collider object to use for collision and physics.")]
         public GameObject ProjectileColliderObject;
 
@@ -106,13 +110,28 @@ namespace DigitalRuby.PyroParticles
             }
 			EnemyHealth enemyHealth = c.gameObject.GetComponent<EnemyHealth> ();
 			if (enemyHealth != null) {
-				enemyHealth.TakeDamage (100, c.transform.position);
+				enemyHealth.TakeDamage (damage, c.transform.position);
 			}
 
 			PlayerHealth playerHealth = c.gameObject.GetComponent<PlayerHealth> ();
 			if (playerHealth != null) {
-				playerHealth.TakeDamage (100);
+                //playerHealth.TakeDamage (100);
+                GameObject player = playerHealth.gameObject;
+                string playerName = player.GetComponent<PlayerID>().playerUniqueName;
+                if (playerName != ownerName)
+                {
+                    CmdTellServerWhoGotShoot(playerName);
+                }
+
 			}
+        }
+        
+        [Command]
+        private void CmdTellServerWhoGotShoot(string uniqueID)
+        {
+            GameObject obj = GameObject.Find(uniqueID);
+            Debug.Log(obj + " taken " + damage + " damage.");
+            obj.GetComponent<PlayerHealth>().TakeDamage(20);
         }
     }
 }

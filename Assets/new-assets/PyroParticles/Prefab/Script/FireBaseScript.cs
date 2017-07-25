@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using UnityEngine.Networking;
 
 namespace DigitalRuby.PyroParticles
 {
@@ -17,7 +18,7 @@ namespace DigitalRuby.PyroParticles
         public float Maximum;
     }
 
-    public class FireBaseScript : MonoBehaviour
+    public class FireBaseScript : NetworkBehaviour
     {
 		[Tooltip("Damage dealt on collision")]
 		public float Damage = 50.0f;
@@ -56,7 +57,7 @@ namespace DigitalRuby.PyroParticles
         {
             // 2 extra seconds just to make sure animation and graphics have finished ending
             yield return new WaitForSeconds(StopTime + 2.0f);
-
+            
             GameObject.Destroy(gameObject);
         }
 
@@ -84,8 +85,8 @@ namespace DigitalRuby.PyroParticles
         protected virtual void Awake()
         {
             Starting = true;
-            int fireLayer = UnityEngine.LayerMask.NameToLayer("FireLayer");
-            UnityEngine.Physics.IgnoreLayerCollision(fireLayer, fireLayer);
+            int fireLayer = LayerMask.NameToLayer("FireLayer");
+            Physics.IgnoreLayerCollision(fireLayer, fireLayer);
         }
 
         protected virtual void Start()
@@ -159,7 +160,7 @@ namespace DigitalRuby.PyroParticles
             }
 
             // find all colliders and add explosive force
-            Collider[] objects = UnityEngine.Physics.OverlapSphere(pos, radius);
+            Collider[] objects = Physics.OverlapSphere(pos, radius);
             foreach (Collider h in objects)
             {
                 Rigidbody r = h.GetComponent<Rigidbody>();

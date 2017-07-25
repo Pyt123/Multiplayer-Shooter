@@ -1,10 +1,10 @@
 ﻿using UnityEngine;
 using System.Collections;
 using DigitalRuby.PyroParticles;
+using UnityEngine.Networking;
 
-public class PlayerShoot : MonoBehaviour {
-
-
+public class PlayerShoot : NetworkBehaviour
+{
 	RaycastHit shootHit;
 	Ray shootRay;
 	int shootableMask;
@@ -33,26 +33,29 @@ public class PlayerShoot : MonoBehaviour {
         InitializeProjectile();
 	
 	}
-	
-	// Update is called once per frame
-	void Update () {
-		#if !MOBILE_INPUT
-		if (Input.GetButtonDown ("Fire1") && isShooting == false && isEnabled == true) {
-            Shoot();
-		} 
-		#else
-		if(CrossPlatformInputManager.GetAxisRaw("Mouse X") != 0 || CrossPlatformInputManager.GetAxisRaw("Mouse Y") != 0){
-			Shoot();
-		}
-		#endif
-	
-	}
 
+    // Update is called once per frame
+    void Update() {
+        if (isLocalPlayer)
+        {
+#if !MOBILE_INPUT
+            if (Input.GetButtonDown("Fire1") && isShooting == false && isEnabled == true)
+            {
+                CmdShoot();
+            }
+#else
+		    if(CrossPlatformInputManager.GetAxisRaw("Mouse X") != 0 || CrossPlatformInputManager.GetAxisRaw("Mouse Y") != 0){
+			CmdShoot();
+		    }
+#endif
+        }
+    }
 
-	public void Shoot(){
+    [Command]
+	public void CmdShoot(){
 		isShooting = true;
         SpawnProjectile();
-        Invoke("StopShooting", 2f);
+        Invoke("StopShooting", 1f);
 	}
 
 	void StopShooting(){
@@ -72,5 +75,7 @@ public class PlayerShoot : MonoBehaviour {
     private void SpawnProjectile()
     {
         currentProjectilePrefab = Instantiate(selectedProjectilePrefab, projectileSpawnPoint.transform.position, transform.rotation);
+        NetworkServer.Spawn(currentProjectilePrefab);
+        currentProjectilePrefab.GetComponent<FireProjectileScript>().ownerName = transform.name;
     }
 }

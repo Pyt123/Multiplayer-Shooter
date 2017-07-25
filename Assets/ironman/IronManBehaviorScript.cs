@@ -3,8 +3,9 @@ using System.Collections;
 using UnityStandardAssets.CrossPlatformInput;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
+using UnityEngine.Networking;
 
-public class IronManBehaviorScript : MonoBehaviour {
+public class IronManBehaviorScript : NetworkBehaviour {
 
 	public float speed = 2.0f;
 	PlayerHealth playerHealth;
@@ -50,19 +51,26 @@ public class IronManBehaviorScript : MonoBehaviour {
 	void FixedUpdate (){
 		if (isEnabled == false)
 			return;
-		// we need to get a hold of which keys (input) has been used by the Player
-		float h = CrossPlatformInputManager.GetAxisRaw("Horizontal");
-		float v = CrossPlatformInputManager.GetAxisRaw ("Vertical");
 
-		Move (h, v);
+        if (isLocalPlayer)
+        {
+            // we need to get a hold of which keys (input) has been used by the Player
+            float h = CrossPlatformInputManager.GetAxisRaw("Horizontal");
+            float v = CrossPlatformInputManager.GetAxisRaw("Vertical");
 
-		if (h != 0 || v != 0) {
-			isMoving = true;
-		} else {
-			isMoving = false;
-		}
-		Animating ();
-		Turning ();
+            Move(h, v);
+
+            if (h != 0 || v != 0)
+            {
+                isMoving = true;
+            }
+            else
+            {
+                isMoving = false;
+            }
+            Animating();
+            Turning();
+        }
 	}
 
 

@@ -1,11 +1,12 @@
 ﻿using UnityEngine;
 using System.Collections;
 using UnityEngine.UI;
+using UnityEngine.Networking;
 
-public class PlayerHealth : MonoBehaviour {
+public class PlayerHealth : NetworkBehaviour {
 
 	public int startingHealth = 100;
-	public int currentHealth = 100;
+    [SyncVar] public int currentHealth = 100;
 
 	float shakingTimer = 0;
 	public float timeToShake = 1.0f;
@@ -34,15 +35,16 @@ public class PlayerHealth : MonoBehaviour {
 				isShaking = false;
 			}
 		}
-
 	}
 
-
 	public void TakeDamage(int amount){
+        if (!isServer)
+            return;
+
 		if (isDead)
 			return;
 
-		ShakeCamera ();
+		//TODO: uncomment ShakeCamera ();
 
 		currentHealth -= amount;
 		if (currentHealth <= 0) {
