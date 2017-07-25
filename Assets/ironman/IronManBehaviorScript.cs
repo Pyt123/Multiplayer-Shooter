@@ -10,6 +10,8 @@ public class IronManBehaviorScript : MonoBehaviour {
 	PlayerHealth playerHealth;
 	public int score;
 
+    [SerializeField] private Material[] materials;
+
 	Vector3 movement;
 	Rigidbody playerRigidBody;
 	bool isMoving = false;
@@ -26,6 +28,8 @@ public class IronManBehaviorScript : MonoBehaviour {
 		playerHealth = player.GetComponent<PlayerHealth> ();
 		score = 0;
 		audioSource = GetComponent<AudioSource> ();
+
+        InitializeCostume();
 
 		AdsSetup ();
 	}
@@ -132,4 +136,10 @@ public class IronManBehaviorScript : MonoBehaviour {
     {
 		//Advertisement.Initialize ("1041425", true);
 	}
+
+    private void InitializeCostume()
+    {
+        int nb = Random.Range(1, materials.Length);
+        gameObject.GetComponent<Renderer>().material = materials[nb] as Material;
+    }
 }
